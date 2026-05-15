@@ -2,163 +2,1015 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KFC Clone PRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<link rel="stylesheet" href="css/styles.css">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+  :root {
+    --red: #e4002b;
+    --dark-red: #b5001f;
+    --black: #1a1a1a;
+    --white: #ffffff;
+    --gray: #f5f5f5;
+    --text-gray: #555;
+    --border: #ddd;
+  }
+
+  body { font-family: 'Roboto', sans-serif; background: #fff; color: var(--black); }
+
+  /* ===== HEADER ===== */
+  .top-stripes { display: flex; height: 5px; }
+  .top-stripes span { flex: 1; }
+  .top-stripes span:nth-child(1) { background: var(--red); }
+  .top-stripes span:nth-child(2) { background: var(--black); }
+  .top-stripes span:nth-child(3) { background: var(--red); }
+
+  .topbar {
+    background: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 30px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .top-left, .top-right { display: flex; gap: 18px; align-items: center; }
+  .top-link { cursor: pointer; color: var(--black); transition: color .2s; font-family: 'Oswald', sans-serif; letter-spacing: .5px; }
+  .top-link:hover { color: var(--red); }
+  .top-link.login { color: var(--red); font-weight: 600; }
+
+  .location-bar {
+    background: var(--gray);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .location-bar strong { color: var(--black); }
+  .location-bar span { color: var(--text-gray); margin-left: 8px; }
+  .location-form { display: flex; gap: 8px; align-items: center; }
+  .location-form input {
+    padding: 7px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    font-size: 13px;
+    outline: none;
+    transition: border .2s;
+    width: 260px;
+  }
+  .location-form input:focus { border-color: var(--red); }
+  .location-form button {
+    background: var(--red);
+    color: #fff;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    transition: background .2s;
+  }
+  .location-form button:hover { background: var(--dark-red); }
+
+  .navbar {
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    padding: 12px 30px;
+    gap: 40px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+  .logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 2px;
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links li {
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    letter-spacing: .5px;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color .2s, color .2s;
+  }
+  .nav-links li:hover { border-bottom-color: var(--red); color: var(--red); }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    height: 480px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #3a0010 60%, #e4002b 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 50px 60px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: 'KFC';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Oswald', sans-serif;
+    font-size: 280px;
+    font-weight: 700;
+    color: rgba(255,255,255,.04);
+    pointer-events: none;
+    letter-spacing: -10px;
+  }
+  .hero-content { position: relative; z-index: 2; }
+  .hero-content h2 { font-family: 'Oswald', sans-serif; font-size: 56px; color: #fff; font-weight: 700; line-height: 1; }
+  .hero-content p { color: rgba(255,255,255,.75); font-size: 18px; margin: 10px 0 24px; }
+  .hero-content button {
+    background: var(--red);
+    color: #fff;
+    border: none;
+    padding: 14px 36px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background .2s, transform .15s;
+  }
+  .hero-content button:hover { background: var(--dark-red); transform: translateY(-2px); }
+
+  /* ===== MENU SECTION ===== */
+  .menu { padding: 50px 30px; }
+  .menu h2 { font-family: 'Oswald', sans-serif; font-size: 32px; margin-bottom: 28px; border-left: 5px solid var(--red); padding-left: 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+    transition: transform .2s, box-shadow .2s;
+    cursor: pointer;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.15); }
+  .card img { width: 100%; height: 150px; object-fit: cover; }
+  .card .info { padding: 12px 16px; }
+  .card .info h3 { font-family: 'Oswald', sans-serif; font-size: 18px; }
+  .card .info p { color: var(--red); font-weight: 600; font-size: 16px; margin-top: 4px; }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(3px);
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 12px;
+    max-width: 650px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  }
+  .modal-header {
+    background: var(--red);
+    color: #fff;
+    padding: 20px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px 12px 0 0;
+    position: sticky;
+    top: 0;
+  }
+  .modal-header h3 { font-family: 'Oswald', sans-serif; font-size: 22px; letter-spacing: .5px; }
+  .modal-close { background: none; border: none; color: #fff; font-size: 26px; cursor: pointer; line-height: 1; }
+  .modal-body { padding: 28px; }
+
+  /* ===== FORMS ===== */
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-weight: 500; font-size: 14px; margin-bottom: 6px; color: var(--black); }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    outline: none;
+    transition: border .2s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--red); }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .btn-primary {
+    background: var(--red);
+    color: #fff;
+    border: none;
+    padding: 13px 28px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    letter-spacing: .5px;
+    cursor: pointer;
+    border-radius: 6px;
+    width: 100%;
+    transition: background .2s;
+  }
+  .btn-primary:hover { background: var(--dark-red); }
+  .btn-secondary {
+    background: var(--black);
+    color: #fff;
+    border: none;
+    padding: 13px 28px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    width: 100%;
+    margin-top: 10px;
+    transition: background .2s;
+  }
+  .btn-secondary:hover { background: #333; }
+
+  /* Delivery toggle */
+  .delivery-toggle { display: flex; gap: 12px; margin-bottom: 20px; }
+  .toggle-btn {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid var(--border);
+    background: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    transition: all .2s;
+    text-align: center;
+  }
+  .toggle-btn.active { border-color: var(--red); background: #fff0f3; color: var(--red); }
+
+  /* ===== RESTAURANT CARDS ===== */
+  .restaurant-list { display: flex; flex-direction: column; gap: 14px; }
+  .restaurant-card {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .restaurant-card h4 { font-family: 'Oswald', sans-serif; font-size: 17px; }
+  .restaurant-card p { font-size: 13px; color: var(--text-gray); margin-top: 3px; }
+  .badge {
+    background: var(--red);
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: .5px;
+  }
+  .badge.closed { background: #999; }
+
+  /* ===== HISTORY ===== */
+  .history-timeline { border-left: 3px solid var(--red); padding-left: 24px; }
+  .history-item { margin-bottom: 28px; position: relative; }
+  .history-item::before {
+    content: '';
+    position: absolute;
+    left: -31px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    background: var(--red);
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px var(--red);
+  }
+  .history-item .year { font-family: 'Oswald', sans-serif; font-size: 20px; color: var(--red); font-weight: 700; }
+  .history-item p { font-size: 14px; color: var(--text-gray); margin-top: 5px; line-height: 1.6; }
+
+  /* ===== MENU ITEMS IN MODAL ===== */
+  .menu-category { margin-bottom: 28px; }
+  .menu-category h4 { font-family: 'Oswald', sans-serif; font-size: 20px; color: var(--red); margin-bottom: 14px; border-bottom: 2px solid var(--border); padding-bottom: 8px; }
+  .menu-items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+  .menu-item {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+  }
+  .menu-item:hover { border-color: var(--red); background: #fff0f3; }
+  .menu-item .item-emoji { font-size: 36px; display: block; margin-bottom: 8px; }
+  .menu-item h5 { font-family: 'Oswald', sans-serif; font-size: 15px; }
+  .menu-item .price { color: var(--red); font-weight: 700; font-size: 15px; margin-top: 4px; }
+
+  /* ===== PROMOS ===== */
+  .promo-card {
+    background: linear-gradient(135deg, var(--red), var(--dark-red));
+    color: #fff;
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .promo-card h4 { font-family: 'Oswald', sans-serif; font-size: 22px; }
+  .promo-card p { font-size: 13px; opacity: .85; margin-top: 4px; }
+  .promo-card .discount { font-family: 'Oswald', sans-serif; font-size: 42px; font-weight: 700; line-height: 1; }
+  .promo-card.dark { background: linear-gradient(135deg, #1a1a1a, #333); }
+
+  /* ===== PROFILE ===== */
+  .profile-header { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; }
+  .avatar {
+    width: 72px;
+    height: 72px;
+    background: var(--red);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 28px;
+    color: #fff;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .profile-info h4 { font-family: 'Oswald', sans-serif; font-size: 22px; }
+  .profile-info p { color: var(--text-gray); font-size: 14px; }
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+  .stat-box { background: var(--gray); border-radius: 8px; padding: 16px; text-align: center; }
+  .stat-box .num { font-family: 'Oswald', sans-serif; font-size: 28px; color: var(--red); font-weight: 700; }
+  .stat-box .label { font-size: 12px; color: var(--text-gray); margin-top: 4px; }
+  .order-history-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .order-history-item .order-name { font-weight: 500; font-size: 14px; }
+  .order-history-item .order-date { font-size: 12px; color: var(--text-gray); }
+  .order-history-item .order-price { font-weight: 700; color: var(--red); }
+
+  /* ===== LOGIN ===== */
+  .login-tabs { display: flex; margin-bottom: 24px; border-bottom: 2px solid var(--border); }
+  .login-tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    color: var(--text-gray);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all .2s;
+  }
+  .login-tab.active { color: var(--red); border-bottom-color: var(--red); }
+  .login-panel { display: none; }
+  .login-panel.active { display: block; }
+  .social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 11px;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background .2s;
+    font-family: 'Roboto', sans-serif;
+  }
+  .social-btn:hover { background: var(--gray); }
+  .divider { text-align: center; margin: 16px 0; color: var(--text-gray); font-size: 13px; position: relative; }
+  .divider::before, .divider::after { content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--border); }
+  .divider::before { left: 0; } .divider::after { right: 0; }
+
+  /* ===== SEARCH BAR IN MODAL ===== */
+  .search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+  .search-bar input { flex: 1; padding: 11px 16px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 14px; outline: none; }
+  .search-bar input:focus { border-color: var(--red); }
+  .search-bar button { background: var(--red); color: #fff; border: none; padding: 11px 20px; border-radius: 6px; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 14px; }
+  .search-results { display: flex; flex-direction: column; gap: 10px; }
+  .search-result-item { padding: 14px; border: 1.5px solid var(--border); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .search-result-item h5 { font-family: 'Oswald', sans-serif; font-size: 16px; }
+  .search-result-item p { font-size: 13px; color: var(--text-gray); }
+  .search-result-item .price { font-weight: 700; color: var(--red); font-size: 16px; }
+
+  /* ===== SUCCESS MSG ===== */
+  .success-msg {
+    background: #e8f5e9;
+    border: 1.5px solid #4caf50;
+    color: #2e7d32;
+    padding: 14px 18px;
+    border-radius: 8px;
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    margin-top: 14px;
+    display: none;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--black);
+    color: rgba(255,255,255,.6);
+    text-align: center;
+    padding: 28px;
+    font-size: 13px;
+    margin-top: 60px;
+  }
+  footer span { color: var(--red); font-weight: 600; }
+
+  /* ===== SCROLL ===== */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #f1f1f1; }
+  ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+</style>
 </head>
-
 <body>
 
 <header>
+  <div class="top-stripes"><span></span><span></span><span></span></div>
 
-    <!-- FRANJAS -->
-    <div class="top-stripes">
-        <span></span><span></span><span></span>
+  <div class="topbar">
+    <div class="top-left">
+      <span class="top-link" onclick="openModal('ordenar')">Ordenar</span>
+      <span class="top-link" onclick="openModal('contactos')">Contactos</span>
+      <span class="top-link" onclick="openModal('restaurantes')">Restaurantes</span>
+      <span class="top-link" onclick="openModal('nosotros')">Nosotros</span>
     </div>
-
-    <!-- TOPBAR -->
-    <div class="topbar">
-        <div class="top-left">
-            <span class="top-link" onclick="irAPollo('ordenar')">Ordenar</span>
-            <span class="top-link" onclick="irAPollo('contactos')">Contactos</span>
-            <span class="top-link" onclick="irAPollo('restaurantes')">Restaurantes</span>
-            <span class="top-link" onclick="irAPollo('nosotros')">Nosotros</span>
-            <span class="top-link" onclick="irAPollo('ventas')">Ventas institucionales</span>
-        </div>
-
-        <div class="top-right">
-            <span class="top-link" onclick="irAPollo('buscar')">Buscar</span>
-            <span class="top-link" onclick="irAPollo('cupones')">Cupones</span>
-            <span class="top-link" onclick="irAPollo('perfil')">Perfil</span>
-            <span class="top-link login" onclick="irAPollo('ingresar')">Ingresar</span>
-        </div>
+    <div class="top-right">
+      <span class="top-link" onclick="openModal('buscar')">Buscar</span>
+      <span class="top-link" onclick="openModal('perfil')">Perfil</span>
+      <span class="top-link login" onclick="openModal('ingresar')">Ingresar</span>
     </div>
+  </div>
 
-    <!-- UBICACIÓN -->
-    <div class="location-bar">
-        <div>
-            <strong>Domicilio</strong>
-            <span>KFC Express</span>
-        </div>
-
-        <input type="text" placeholder="Ingresa tu ubicación">
+  <div class="location-bar">
+    <div>
+      <strong>Domicilio</strong>
+      <span>KFC Express</span>
     </div>
+    <div class="location-form">
+      <input type="text" id="locationInput" placeholder="Ingresa tu ubicación" onkeydown="if(event.key==='Enter') buscarUbicacion()">
+      <button onclick="buscarUbicacion()">🔍 Buscar</button>
+    </div>
+  </div>
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <h1 class="logo">KFC</h1>
-
-        <ul class="nav-links">
-            <li onclick="irAPollo('menu')">Menú</li>
-            <li onclick="irAPollo('promos')">Promos</li>
-            <li onclick="irAPollo('tiendas')">Tiendas</li>
-        </ul>
-    </nav>
-
+  <nav class="navbar">
+    <h1 class="logo">KFC</h1>
+    <ul class="nav-links">
+      <li onclick="openModal('menu')">Menú</li>
+      <li onclick="openModal('promos')">Promos</li>
+      <li onclick="openModal('tiendas')">Tiendas</li>
+    </ul>
+  </nav>
 </header>
 
 <!-- HERO -->
 <section class="hero">
-    <div class="overlay"></div>
-
-    <div class="hero-content">
-        <h2>Finger Lickin' Good</h2>
-        <p>El auténtico sabor del pollo crujiente</p>
-        <button onclick="irAPollo('ordenar')">Ordenar ahora</button>
-    </div>
+  <div class="hero-content">
+    <h2>Finger Lickin' Good</h2>
+    <p>El auténtico sabor del pollo crujiente</p>
+    <button onclick="openModal('ordenar')">Ordenar ahora</button>
+  </div>
 </section>
 
-<!-- MENÚ -->
+<!-- MENÚ PRINCIPAL -->
 <section class="menu">
-    <h2>Lo más pedido</h2>
-
-    <div class="grid">
-
-        <div class="card"><img src="assets/pollo1.jfif"><div class="info"><h3>Bucket</h3><p>$25.000</p></div></div>
-        <div class="card"><img src="assets/pollo3.jfif"><div class="info"><h3>Alitas</h3><p>$15.000</p></div></div>
-        <div class="card"><img src="assets/COMBOS.png"><div class="info"><h3>Combo</h3><p>$20.000</p></div></div>
-        <div class="card"><img src="assets/pollo5.png"><div class="info"><h3>XL</h3><p>$30.000</p></div></div>
-        <div class="card"><img src="assets/pollo6.jfif"><div class="info"><h3>Wrap</h3><p>$12.000</p></div></div>
-        <div class="card"><img src="assets/pollo7.webp"><div class="info"><h3>BBQ</h3><p>$14.000</p></div></div>
-        <div class="card"><img src="assets/pollo8.jfif"><div class="info"><h3>Familiar</h3><p>$35.000</p></div></div>
-        <div class="card"><img src="assets/pollo9.jfif"><div class="info"><h3>Nuggets</h3><p>$10.000</p></div></div>
-        <div class="card"><img src="assets/pollo3.jfif"><div class="info"><h3>Crispy</h3><p>$13.000</p></div></div>
-        <div class="card"><img src="assets/COMBOS.png"><div class="info"><h3>Plus</h3><p>$22.000</p></div></div>
-
-    </div>
+  <h2>Lo más pedido</h2>
+  <div class="grid">
+    <div class="card" onclick="openModal('ordenar')"><img src="assets/pollo1.jfif" onerror="this.src='https://via.placeholder.com/200x150/e4002b/fff?text=Bucket'"><div class="info"><h3>Bucket</h3><p>$25.000</p></div></div>
+    <div class="card" onclick="openModal('ordenar')"><img src="assets/Pollo2.jfif" onerror="this.src='https://via.placeholder.com/200x150/e4002b/fff?text=Burger'"><div class="info"><h3>Burger</h3><p>$18.000</p></div></div>
+    <div class="card" onclick="openModal('ordenar')"><img src="assets/pollo3.jfif" onerror="this.src='https://via.placeholder.com/200x150/e4002b/fff?text=Alitas'"><div class="info"><h3>Alitas</h3><p>$15.000</p></div></div>
+    <div class="card" onclick="openModal('ordenar')"><img src="assets/COMBOS.png" onerror="this.src='https://via.placeholder.com/200x150/1a1a1a/fff?text=Combo'"><div class="info"><h3>Combo</h3><p>$20.000</p></div></div>
+    <div class="card" onclick="openModal('ordenar')"><img src="assets/pollo5.png" onerror="this.src='https://via.placeholder.com/200x150/e4002b/fff?text=XL'"><div class="info"><h3>XL</h3><p>$30.000</p></div></div>
+    <div class="card" onclick="openModal('ordenar')"><img src="assets/pollo6.jfif" onerror="this.src='https://via.placeholder.com/200x150/1a1a1a/fff?text=Wrap'"><div class="info"><h3>Wrap</h3><p>$12.000</p></div></div>
+    <div class="card" onclick="openModal('ordenar')"><img src="assets/pollo7.webp" onerror="this.src='https://via.placeholder.com/200x150/e4002b/fff?text=BBQ'"><div class="info"><h3>BBQ</h3><p>$14.000</p></div></div>
+    <div class="card" onclick="openModal('ordenar')"><img src="assets/pollo8.jfif" onerror="this.src='https://via.placeholder.com/200x150/1a1a1a/fff?text=Familiar'"><div class="info"><h3>Familiar</h3><p>$35.000</p></div></div>
+    <div class="card" onclick="openModal('ordenar')"><img src="assets/pollo9.jfif" onerror="this.src='https://via.placeholder.com/200x150/e4002b/fff?text=Nuggets'"><div class="info"><h3>Nuggets</h3><p>$10.000</p></div></div>
+    <div class="card" onclick="openModal('ordenar')"><img src="assets/pollo3.jfif" onerror="this.src='https://via.placeholder.com/200x150/1a1a1a/fff?text=Crispy'"><div class="info"><h3>Crispy</h3><p>$13.000</p></div></div>
+    <div class="card" onclick="openModal('ordenar')"><img src="assets/COMBOS.png" onerror="this.src='https://via.placeholder.com/200x150/e4002b/fff?text=Plus'"><div class="info"><h3>Plus</h3><p>$22.000</p></div></div>
+  </div>
 </section>
+
+<footer>
+  <p>© 2025 <span>KFC Clone PRO</span> — Proyecto educativo. Todos los derechos reservados.</p>
+</footer>
+
+<!-- ===== MODAL CONTENEDOR ===== -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeOnOverlay(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-header">
+      <h3 id="modalTitle">KFC</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
 
 <script>
-    const enlacesPollo = {
-        ordenar: [
-            "https://www.kfc.com.co/menu",
-            "https://www.rappi.com.co/restaurantes/kfc",
-            "https://www.ifood.com.co/restaurante/kfc"
-        ],
-        contactos: [
-            "https://www.kfc.com.co/contacto",
-            "https://www.avicolaelbucanero.com/contacto",
-            "https://www.kokoriko.com.co/contactenos"
-        ],
-        restaurantes: [
-            "https://www.kfc.com.co/restaurantes",
-            "https://www.kokoriko.com.co/restaurantes",
-            "https://www.piqueteadero.com.co"
-        ],
-        nosotros: [
-            "https://www.kfc.com.co/nosotros",
-            "https://es.wikipedia.org/wiki/KFC",
-            "https://www.amandine.com.co/historia"
-        ],
-        ventas: [
-            "https://www.kfc.com.co/empresas",
-            "https://www.kokoriko.com.co/empresas",
-            "https://polloelpaso.com/ventas"
-        ],
-        buscar: [
-            "https://www.google.com/search?q=recetas+de+pollo+crujiente",
-            "https://www.google.com/search?q=mejores+pollos+fritos+colombia",
-            "https://www.google.com/search?q=pollo+frito+crispy+casero"
-        ],
-        cupones: [
-            "https://www.kfc.com.co/promociones",
-            "https://www.cuponatic.com.co/restaurantes/pollo",
-            "https://www.groupon.com.co/local/bogota/restaurantes-de-pollo"
-        ],
-        perfil: [
-            "https://www.kfc.com.co/login",
-            "https://www.rappi.com.co/login",
-            "https://www.domicilios.com"
-        ],
-        ingresar: [
-            "https://www.kfc.com.co/login",
-            "https://www.kokoriko.com.co/login",
-            "https://www.domicilios.com/login"
-        ],
-        menu: [
-            "https://www.kfc.com.co/menu",
-            "https://www.kokoriko.com.co/menu",
-            "https://www.restaurantecia.com/menus-pollo"
-        ],
-        promos: [
-            "https://www.kfc.com.co/promociones",
-            "https://www.kokoriko.com.co/promos",
-            "https://www.rappi.com.co/restaurantes/kfc?promo=1"
-        ],
-        tiendas: [
-            "https://www.kfc.com.co/restaurantes",
-            "https://www.kokoriko.com.co/puntos-de-venta",
-            "https://www.google.com/maps/search/pollo+frito+cerca"
-        ]
-    };
+// ========== DATA ==========
+const restaurantes = [
+  { nombre: "KFC Andino", dir: "Carrera 11 # 82-01, Bogotá", tel: "(601) 345-6789", estado: true, horario: "10:00 AM – 10:00 PM" },
+  { nombre: "KFC Gran Estación", dir: "Carrera 65 # 22B-35, Bogotá", tel: "(601) 345-6780", estado: true, horario: "10:00 AM – 10:00 PM" },
+  { nombre: "KFC Titan Plaza", dir: "Carrera 79B # 66-43, Bogotá", tel: "(601) 345-6781", estado: true, horario: "10:00 AM – 11:00 PM" },
+  { nombre: "KFC Centro Comercial El Retiro", dir: "Calle 81 # 11-94, Bogotá", tel: "(601) 345-6782", estado: false, horario: "Cerrado hoy" },
+  { nombre: "KFC Calima", dir: "Carrera 36 # 18A-51, Bogotá", tel: "(601) 345-6783", estado: true, horario: "10:00 AM – 10:00 PM" },
+  { nombre: "KFC Centro Mayor", dir: "Autopista Sur # 23-76, Bogotá", tel: "(601) 345-6784", estado: true, horario: "10:00 AM – 11:00 PM" },
+  { nombre: "KFC Santafé", dir: "Carrera 43A # 7-50, Bogotá", tel: "(601) 345-6785", estado: true, horario: "10:00 AM – 10:00 PM" },
+  { nombre: "KFC Bulevar Niza", dir: "Calle 127 # 56-75, Bogotá", tel: "(601) 345-6786", estado: false, horario: "Cerrado por mantenimiento" },
+  { nombre: "KFC Hayuelos", dir: "Calle 20 # 82-52, Bogotá", tel: "(601) 345-6787", estado: true, horario: "10:00 AM – 10:00 PM" },
+  { nombre: "KFC Palatino", dir: "Carrera 7 # 235-60, Bogotá", tel: "(601) 345-6788", estado: true, horario: "10:00 AM – 9:00 PM" },
+];
 
-    function irAPollo(seccion) {
-        const lista = enlacesPollo[seccion];
-        const urlAleatoria = lista[Math.floor(Math.random() * lista.length)];
-        window.open(urlAleatoria, "_blank");
-    }
+const menuData = [
+  { cat: "🍗 Pollos", items: [
+    { n: "Bucket Familiar (8 piezas)", p: "$45.000" }, { n: "Pollo Crujiente (2 piezas)", p: "$18.000" },
+    { n: "Pollo XL", p: "$30.000" }, { n: "Pollo BBQ", p: "$14.000" },
+  ]},
+  { cat: "🍔 Burgers", items: [
+    { n: "KFC Burger Classic", p: "$18.000" }, { n: "KFC Burger Doble", p: "$24.000" },
+    { n: "Wrap Crispy", p: "$12.000" }, { n: "Burger BBQ Deluxe", p: "$22.000" },
+  ]},
+  { cat: "🥣 Combos", items: [
+    { n: "Combo Burger + Papas + Bebida", p: "$28.000" }, { n: "Combo Alitas x6 + Bebida", p: "$25.000" },
+    { n: "Combo Familiar (10 pzas)", p: "$55.000" }, { n: "Combo Plus", p: "$22.000" },
+  ]},
+  { cat: "🍟 Extras", items: [
+    { n: "Nuggets x6", p: "$10.000" }, { n: "Alitas x6", p: "$15.000" },
+    { n: "Papas medianas", p: "$6.000" }, { n: "Ensalada coleslaw", p: "$5.000" },
+  ]},
+  { cat: "🥤 Bebidas", items: [
+    { n: "Coca-Cola 500ml", p: "$5.000" }, { n: "Jugo de naranja", p: "$6.000" },
+    { n: "Agua", p: "$3.000" }, { n: "Limonada", p: "$7.000" },
+  ]},
+];
+
+const historialPedidos = [
+  { item: "Combo Familiar", fecha: "Mayo 10, 2025", precio: "$55.000" },
+  { item: "Bucket + Papas", fecha: "Abril 28, 2025", precio: "$40.000" },
+  { item: "Burger Doble x2", fecha: "Abril 15, 2025", precio: "$48.000" },
+];
+
+// ========== MODAL CONTROL ==========
+function openModal(tipo) {
+  document.getElementById('modalOverlay').classList.add('active');
+  renderModal(tipo);
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+function closeOnOverlay(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function renderModal(tipo) {
+  const title = document.getElementById('modalTitle');
+  const body = document.getElementById('modalBody');
+
+  switch(tipo) {
+    // ===== ORDENAR =====
+    case 'ordenar':
+      title.textContent = '📦 Hacer mi pedido';
+      body.innerHTML = `
+        <div class="delivery-toggle">
+          <div class="toggle-btn active" id="btn-domicilio" onclick="setDelivery('domicilio')">🛵 Domicilio</div>
+          <div class="toggle-btn" id="btn-tienda" onclick="setDelivery('tienda')">🏪 Recoger en tienda</div>
+        </div>
+        <div id="delivery-fields">
+          <div class="form-group">
+            <label>Dirección de entrega</label>
+            <input type="text" id="ord-direccion" placeholder="Ej: Carrera 11 # 82-01, Bogotá">
+          </div>
+          <div class="form-group">
+            <label>Barrio / Referencia</label>
+            <input type="text" id="ord-barrio" placeholder="Ej: Chapinero, cerca al parque">
+          </div>
+        </div>
+        <div id="tienda-fields" style="display:none">
+          <div class="form-group">
+            <label>Selecciona tu tienda</label>
+            <select id="ord-tienda">
+              ${restaurantes.filter(r=>r.estado).map(r=>`<option>${r.nombre} — ${r.dir}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre completo</label>
+            <input type="text" id="ord-nombre" placeholder="Tu nombre">
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="text" id="ord-tel" placeholder="Ej: 300 123 4567">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>¿Qué deseas pedir?</label>
+          <select id="ord-producto">
+            ${menuData.flatMap(c=>c.items).map(i=>`<option value="${i.n}">${i.n} — ${i.p}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Cantidad</label>
+            <input type="number" id="ord-cantidad" value="1" min="1" max="20">
+          </div>
+          <div class="form-group">
+            <label>Método de pago</label>
+            <select id="ord-pago">
+              <option>Efectivo</option>
+              <option>Tarjeta crédito/débito</option>
+              <option>Nequi</option>
+              <option>Daviplata</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Notas adicionales</label>
+          <textarea id="ord-notas" placeholder="Sin cebolla, extra salsa, etc."></textarea>
+        </div>
+        <button class="btn-primary" onclick="enviarPedido()">🍗 Confirmar pedido</button>
+        <div class="success-msg" id="pedido-success">✅ ¡Pedido enviado con éxito! Te contactaremos pronto.</div>
+      `;
+      break;
+
+    // ===== CONTACTOS =====
+    case 'contactos':
+      title.textContent = '📞 Contactos';
+      body.innerHTML = `
+        <div class="form-group"><label>Nombre</label><input type="text" placeholder="Tu nombre"></div>
+        <div class="form-group"><label>Correo electrónico</label><input type="email" placeholder="correo@ejemplo.com"></div>
+        <div class="form-group"><label>Asunto</label><select><option>Reclamo</option><option>Sugerencia</option><option>Información</option><option>Felicitación</option></select></div>
+        <div class="form-group"><label>Mensaje</label><textarea placeholder="Escribe tu mensaje aquí..."></textarea></div>
+        <button class="btn-primary" onclick="mostrarExito('contacto-ok')">📩 Enviar mensaje</button>
+        <div class="success-msg" id="contacto-ok">✅ ¡Mensaje enviado! Te responderemos en 24-48 horas.</div>
+        <br><br>
+        <p style="font-size:13px;color:#555;line-height:1.7">
+          📞 Línea de atención: <strong>01 8000 123 456</strong><br>
+          📧 Email: <strong>atencion@kfc.com.co</strong><br>
+          🕐 Horario: Lunes a domingo 8:00 AM – 10:00 PM
+        </p>
+      `;
+      break;
+
+    // ===== RESTAURANTES =====
+    case 'restaurantes':
+    case 'tiendas':
+      title.textContent = tipo === 'tiendas' ? '🏪 Nuestras tiendas' : '📍 Restaurantes KFC';
+      body.innerHTML = `
+        <div class="search-bar">
+          <input type="text" id="rest-search" placeholder="Buscar restaurante o zona..." oninput="filtrarRestaurantes()">
+          <button onclick="filtrarRestaurantes()">Buscar</button>
+        </div>
+        <p style="font-size:13px;color:#555;margin-bottom:16px">${restaurantes.length} restaurantes disponibles en Colombia</p>
+        <div class="restaurant-list" id="rest-list">
+          ${restaurantes.map(r => `
+            <div class="restaurant-card">
+              <div>
+                <h4>🍗 ${r.nombre}</h4>
+                <p>📍 ${r.dir}</p>
+                <p>📞 ${r.tel} &nbsp;|&nbsp; 🕐 ${r.horario}</p>
+              </div>
+              <span class="badge ${r.estado ? '' : 'closed'}">${r.estado ? 'Abierto' : 'Cerrado'}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      break;
+
+    // ===== NOSOTROS =====
+    case 'nosotros':
+      title.textContent = '📖 Historia de KFC';
+      body.innerHTML = `
+        <p style="font-size:15px;line-height:1.7;margin-bottom:24px;color:#444">
+          Kentucky Fried Chicken (KFC) es una de las cadenas de comida rápida más icónicas del mundo, famosa por su pollo frito con 11 hierbas y especias secretas.
+        </p>
+        <div class="history-timeline">
+          <div class="history-item">
+            <div class="year">1930</div>
+            <p>Harland David Sanders comienza a vender pollo frito en su gasolinera en Corbin, Kentucky. Su receta de pollo de presión se convierte en un éxito local.</p>
+          </div>
+          <div class="history-item">
+            <div class="year">1952</div>
+            <p>Sanders abre la primera franquicia oficial de KFC en Salt Lake City, Utah. Empieza a viajar por el país vendiendo su famosa receta secreta de 11 hierbas y especias.</p>
+          </div>
+          <div class="history-item">
+            <div class="year">1964</div>
+            <p>Sanders vende la empresa a un grupo de inversionistas por 2 millones de dólares, pero conserva el control de la franquicia en Canadá.</p>
+          </div>
+          <div class="history-item">
+            <div class="year">1969</div>
+            <p>KFC cotiza en la Bolsa de Valores de Nueva York. La cadena ya cuenta con más de 3.000 restaurantes en todo el mundo.</p>
+          </div>
+          <div class="history-item">
+            <div class="year">1986</div>
+            <p>PepsiCo adquiere KFC. La expansión global se acelera y la cadena llega a nuevos mercados en Asia, Latinoamérica y Europa.</p>
+          </div>
+          <div class="history-item">
+            <div class="year">1997</div>
+            <p>KFC pasa a formar parte de Yum! Brands tras la escisión de PepsiCo, junto a Pizza Hut y Taco Bell.</p>
+          </div>
+          <div class="history-item">
+            <div class="year">Hoy</div>
+            <p>Con más de 27.000 restaurantes en 145 países, KFC es la segunda cadena de comida rápida más grande del mundo. En Colombia opera desde 1993 con decenas de puntos en todo el territorio nacional.</p>
+          </div>
+        </div>
+      `;
+      break;
+
+    // ===== BUSCAR =====
+    case 'buscar':
+      title.textContent = '🔍 Buscar combo o producto';
+      body.innerHTML = `
+        <div class="search-bar">
+          <input type="text" id="buscar-input" placeholder="Ej: alitas, burger, combo familiar..." oninput="buscarMenu()" onkeyup="buscarMenu()">
+          <button onclick="buscarMenu()">Buscar</button>
+        </div>
+        <div class="search-results" id="search-results">
+          ${menuData.flatMap(c=>c.items).map(i=>`
+            <div class="search-result-item">
+              <div><h5>${i.n}</h5><p>🍗 Disponible ahora</p></div>
+              <div>
+                <div class="price">${i.p}</div>
+                <button onclick="agregarAlPedido('${i.n}')" style="margin-top:6px;background:var(--red);color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-family:'Oswald',sans-serif">+ Pedir</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      break;
+
+    // ===== PERFIL =====
+    case 'perfil':
+      title.textContent = '👤 Mi perfil';
+      const usuario = JSON.parse(localStorage.getItem('kfc_user') || 'null');
+      if (!usuario) {
+        body.innerHTML = `
+          <div style="text-align:center;padding:20px">
+            <div style="font-size:60px;margin-bottom:16px">🔒</div>
+            <p style="font-size:16px;color:#555;margin-bottom:20px">Debes iniciar sesión para ver tu perfil</p>
+            <button class="btn-primary" onclick="openModal('ingresar')">Iniciar sesión</button>
+          </div>
+        `;
+      } else {
+        body.innerHTML = `
+          <div class="profile-header">
+            <div class="avatar">${usuario.nombre.charAt(0).toUpperCase()}</div>
+            <div class="profile-info">
+              <h4>${usuario.nombre}</h4>
+              <p>${usuario.email}</p>
+              <p style="color:var(--red);font-size:13px;margin-top:4px">🎖️ Miembro KFC Club</p>
+            </div>
+          </div>
+          <div class="stat-grid">
+            <div class="stat-box"><div class="num">3</div><div class="label">Pedidos</div></div>
+            <div class="stat-box"><div class="num">$143K</div><div class="label">Total gastado</div></div>
+            <div class="stat-box"><div class="num">350</div><div class="label">Puntos KFC</div></div>
+          </div>
+          <h4 style="font-family:'Oswald',sans-serif;font-size:18px;margin-bottom:14px;border-left:4px solid var(--red);padding-left:10px">Historial de pedidos</h4>
+          ${historialPedidos.map(p=>`
+            <div class="order-history-item">
+              <div><div class="order-name">🍗 ${p.item}</div><div class="order-date">${p.fecha}</div></div>
+              <div class="order-price">${p.precio}</div>
+            </div>
+          `).join('')}
+          <button class="btn-secondary" style="margin-top:20px" onclick="cerrarSesion()">🚪 Cerrar sesión</button>
+        `;
+      }
+      break;
+
+    // ===== INGRESAR =====
+    case 'ingresar':
+      title.textContent = '🔐 Ingresar / Registrarse';
+      body.innerHTML = `
+        <div class="login-tabs">
+          <div class="login-tab active" id="tab-login" onclick="switchTab('login')">Iniciar sesión</div>
+          <div class="login-tab" id="tab-register" onclick="switchTab('register')">Crear cuenta</div>
+        </div>
+        <div class="login-panel active" id="panel-login">
+          <button class="social-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Continuar con Google
+          </button>
+          <button class="social-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            Continuar con Facebook
+          </button>
+          <div class="divider">o con tu correo</div>
+          <div class="form-group"><label>Correo electrónico</label><input type="email" id="login-email" placeholder="correo@ejemplo.com"></div>
+          <div class="form-group"><label>Contraseña</label><input type="password" id="login-pass" placeholder="••••••••"></div>
+          <button class="btn-primary" onclick="iniciarSesion()">Ingresar</button>
+          <div class="success-msg" id="login-ok">✅ ¡Bienvenido de vuelta!</div>
+          <p style="text-align:center;margin-top:14px;font-size:13px;color:#555">
+            <a href="#" style="color:var(--red)">¿Olvidaste tu contraseña?</a>
+          </p>
+        </div>
+        <div class="login-panel" id="panel-register">
+          <div class="form-row">
+            <div class="form-group"><label>Nombre</label><input type="text" id="reg-nombre" placeholder="Tu nombre"></div>
+            <div class="form-group"><label>Apellido</label><input type="text" id="reg-apellido" placeholder="Tu apellido"></div>
+          </div>
+          <div class="form-group"><label>Correo electrónico</label><input type="email" id="reg-email" placeholder="correo@ejemplo.com"></div>
+          <div class="form-group"><label>Contraseña</label><input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres"></div>
+          <div class="form-group"><label>Teléfono</label><input type="text" id="reg-tel" placeholder="300 123 4567"></div>
+          <button class="btn-primary" onclick="registrarse()">Crear cuenta</button>
+          <div class="success-msg" id="register-ok">✅ ¡Cuenta creada! Ya puedes iniciar sesión.</div>
+        </div>
+      `;
+      break;
+
+    // ===== MENU =====
+    case 'menu':
+      title.textContent = '🍗 Nuestro Menú';
+      body.innerHTML = menuData.map(cat => `
+        <div class="menu-category">
+          <h4>${cat.cat}</h4>
+          <div class="menu-items-grid">
+            ${cat.items.map(i => `
+              <div class="menu-item" onclick="agregarAlPedido('${i.n}')">
+                <span class="item-emoji">${getEmoji(cat.cat)}</span>
+                <h5>${i.n}</h5>
+                <div class="price">${i.p}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+      break;
+
+    // ===== PROMOS =====
+    case 'promos':
+      title.textContent = '🔥 Promociones';
+      body.innerHTML = `
+        <div class="promo-card">
+          <div><h4>2x1 en Burgers</h4><p>Todos los martes • Aplican restricciones</p></div>
+          <div class="discount">2×1</div>
+        </div>
+        <div class="promo-card dark">
+          <div><h4>Combo Familiar</h4><p>10 piezas + 4 bebidas + papas XL</p></div>
+          <div class="discount">-20%</div>
+        </div>
+        <div class="promo-card">
+          <div><h4>Miércoles de Alitas</h4><p>Alitas x12 al precio de x8</p></div>
+          <div class="discount">x12</div>
+        </div>
+        <div class="promo-card dark">
+          <div><h4>Desayuno KFC</h4><p>Lunes a viernes 8am–11am</p></div>
+          <div class="discount">-15%</div>
+        </div>
+        <div class="promo-card">
+          <div><h4>App KFC Club</h4><p>Descarga la app y obtén un combo gratis</p></div>
+          <div class="discount">GRATIS</div>
+        </div>
+        <p style="font-size:12px;color:#999;margin-top:18px">*Promociones válidas por tiempo limitado. Consulta términos y condiciones en tienda.</p>
+      `;
+      break;
+  }
+}
+
+// ========== HELPERS ==========
+function getEmoji(cat) {
+  if (cat.includes('Pollo')) return '🍗';
+  if (cat.includes('Burger')) return '🍔';
+  if (cat.includes('Combo')) return '🥣';
+  if (cat.includes('Extra')) return '🍟';
+  if (cat.includes('Bebida')) return '🥤';
+  return '🍗';
+}
+
+function setDelivery(tipo) {
+  document.getElementById('btn-domicilio').classList.toggle('active', tipo === 'domicilio');
+  document.getElementById('btn-tienda').classList.toggle('active', tipo === 'tienda');
+  document.getElementById('delivery-fields').style.display = tipo === 'domicilio' ? 'block' : 'none';
+  document.getElementById('tienda-fields').style.display = tipo === 'tienda' ? 'block' : 'none';
+}
+
+function enviarPedido() {
+  const nombre = document.getElementById('ord-nombre').value.trim();
+  const tel = document.getElementById('ord-tel').value.trim();
+  if (!nombre || !tel) { alert('Por favor completa tu nombre y teléfono.'); return; }
+  mostrarExito('pedido-success');
+}
+
+function mostrarExito(id) {
+  const el = document.getElementById(id);
+  if (el) { el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 4000); }
+}
+
+function filtrarRestaurantes() {
+  const q = document.getElementById('rest-search').value.toLowerCase();
+  const items = document.querySelectorAll('#rest-list .restaurant-card');
+  items.forEach(card => {
+    card.style.display = card.textContent.toLowerCase().includes(q) ? 'flex' : 'none';
+  });
+}
+
+function buscarMenu() {
+  const q = document.getElementById('buscar-input').value.toLowerCase();
+  const items = menuData.flatMap(c => c.items).filter(i => i.n.toLowerCase().includes(q) || q === '');
+  document.getElementById('search-results').innerHTML = items.length
+    ? items.map(i => `
+        <div class="search-result-item">
+          <div><h5>${i.n}</h5><p>🍗 Disponible ahora</p></div>
+          <div>
+            <div class="price">${i.p}</div>
+            <button onclick="agregarAlPedido('${i.n}')" style="margin-top:6px;background:var(--red);color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-family:'Oswald',sans-serif">+ Pedir</button>
+          </div>
+        </div>
+      `).join('')
+    : '<p style="color:#999;text-align:center;padding:20px">No se encontraron resultados.</p>';
+}
+
+function agregarAlPedido(nombre) {
+  closeModal();
+  setTimeout(() => {
+    openModal('ordenar');
+    setTimeout(() => {
+      const sel = document.getElementById('ord-producto');
+      if (sel) {
+        for (let opt of sel.options) {
+          if (opt.value === nombre) { sel.value = nombre; break; }
+        }
+      }
+    }, 100);
+  }, 100);
+}
+
+function switchTab(tab) {
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+  document.getElementById('panel-login').classList.toggle('active', tab === 'login');
+  document.getElementById('panel-register').classList.toggle('active', tab === 'register');
+}
+
+function iniciarSesion() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  if (!email || !pass) { alert('Completa todos los campos.'); return; }
+  const user = { nombre: email.split('@')[0], email };
+  localStorage.setItem('kfc_user', JSON.stringify(user));
+  mostrarExito('login-ok');
+  setTimeout(() => { closeModal(); openModal('perfil'); }, 1500);
+}
+
+function registrarse() {
+  const nombre = document.getElementById('reg-nombre').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  if (!nombre || !email) { alert('Completa todos los campos.'); return; }
+  const user = { nombre, email };
+  localStorage.setItem('kfc_user', JSON.stringify(user));
+  mostrarExito('register-ok');
+  setTimeout(() => switchTab('login'), 2000);
+}
+
+function cerrarSesion() {
+  localStorage.removeItem('kfc_user');
+  closeModal();
+}
+
+function buscarUbicacion() {
+  const loc = document.getElementById('locationInput').value.trim();
+  if (!loc) { alert('Ingresa una ubicación primero.'); return; }
+  const url = `https://www.google.com/maps/search/KFC+cerca+de+${encodeURIComponent(loc)}`;
+  window.open(url, '_blank');
+}
+
+// Cerrar modal con ESC
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
-
 </body>
 </html>
