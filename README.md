@@ -56,7 +56,7 @@ server.js
 |---|---|
 | HTML5 | Estructura y semántica |
 | CSS3 | Estilos, variables, animaciones |
-| JavaScript (ES6+) | Lógica, DOM, localStorage |
+| JavaScript  | Lógica, DOM, localStorage |
 | Google Fonts | Tipografías Oswald y Roboto |
 | Node.js + server.js | Servidor local para desarrollo |
 
@@ -113,5 +113,4 @@ El proyecto incluye datos de 10 puntos KFC en Bogotá:
 ---
 
 ## 👤 Autor
-
-Desarrollado como proyecto de aprendizaje de desarrollo web frontend.
+Maria Alexandra Jimenez Avila-136871
